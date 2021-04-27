@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+    mymbafeeder:
+        image: mymbafeeder:0.1
+        restart: always
+        container_name: mymbafeeder
+        build:
+            context: .
+            dockerfile: Dockerfile
+        volumes:
+            - .:/app
+        ports:
+            - 5000:5000
+        depends_on: 
+            - mysql
+        command: python app.py
+
+    mysql:
+        image: mysql:5.7.22
+        restart: always
+        container_name: mysql-feeder
+        environment: # environment variables to conect in django settings
+            MYSQL_DATABASE: mymbafeederdb
+            MYSQL_USER: root
+            MYSQL_PASSWORD: root
+            MYSQL_ROOT_PASSWORD: root
+        volumes: # data stored by mysql being mapping to host dir
+            - .mysqldata:/var/lib/mysql
+        ports: 
+            - 3307:3306 # 3306 beeing used by another mysql instance on host
+
+#    nginx:
+#        container_name: nginx
+#        image: nginx
+#        restart: always
+#        build: ./nginx
+#        ports:
+#            - 80:80
+#        links:
+#            - mymbahome
+#        depends_on:
+#            - mymbahome
+#        volumes:
+#            - static:/app/static_files
+#            - media:/app/media
+
+# runs on docker-compose up --build -d
