@@ -6,6 +6,11 @@ mysqldata
 mysqldata/
 .mysqldata
 
+# mongo data
+mongodata
+/mongodata
+.mongodata
+
 # pycharm
 .idea
 

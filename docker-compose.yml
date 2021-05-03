@@ -13,36 +13,32 @@ services:
         ports:
             - 5000:5000
         depends_on: 
-            - mysql
+            - mongo
         command: python app.py
-
-    mysql:
-        image: mysql:5.7.22
+    
+    mongo:
+        image: mongo
         restart: always
-        container_name: mysql-feeder
-        environment: # environment variables to conect in django settings
-            MYSQL_DATABASE: mymbafeederdb
-            MYSQL_USER: root
-            MYSQL_PASSWORD: root
-            MYSQL_ROOT_PASSWORD: root
-        volumes: # data stored by mysql being mapping to host dir
-            - .mysqldata:/var/lib/mysql
-        ports: 
-            - 3307:3306 # 3306 beeing used by another mysql instance on host
-
-#    nginx:
-#        container_name: nginx
-#        image: nginx
-#        restart: always
-#        build: ./nginx
-#        ports:
-#            - 80:80
-#        links:
-#            - mymbahome
-#        depends_on:
-#            - mymbahome
-#        volumes:
-#            - static:/app/static_files
-#            - media:/app/media
+        container_name: mongodb
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: root    #db username
+            MONGO_INITDB_ROOT_PASSWORD: example #db password
+        volumes: 
+            - ./mongodata:/data/db
+    
+    mongo-express:
+        image: mongo-express
+        restart: always
+        container_name: mongo-express
+        ports:
+            - 8081:8081
+        environment:
+            ME_CONFIG_MONGODB_SERVER: mongodb           # mongo service container name
+            ME_CONFIG_MONGODB_ADMINUSERNAME: root       # db mongo username
+            ME_CONFIG_MONGODB_ADMINPASSWORD: example    # db mongo passw
+            ME_CONFIG_BASICAUTH_USERNAME: admin         # mongo-express login user
+            ME_CONFIG_BASICAUTH_PASSWORD: admin         # mongo-empress login passw
+        depends_on: 
+            - mongo
 
 # runs on docker-compose up --build -d
