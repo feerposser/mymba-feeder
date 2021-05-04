@@ -14,7 +14,7 @@ services:
             - 5000:5000
         depends_on: 
             - mongo
-        command: python app.py
+        command: python app/app.py
     
     mongo:
         image: mongo
