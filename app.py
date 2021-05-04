@@ -1,9 +1,11 @@
 from flask import Flask
 from flask import request
-from flask_mongoengine import MongoEngine
-import mongoengine as me
+
+from models import db
+
 
 app = Flask(__name__)
+
 
 app.config["MONGODB_SETTINGS"] = {
     "db": "mymba-feeder-teste",
@@ -13,17 +15,8 @@ app.config["MONGODB_SETTINGS"] = {
     'authentication_source': 'admin'
 }
 
-db = MongoEngine(app)
 
-
-class HotspotModel(me.Document):
-    title = me.StringField(required=True)
-    contributors = me.ListField()
-    latitude = me.FloatField()
-    longitude = me.FloatField()
-
-    def __str__(self):
-        return self.title
+db.init_app(app)
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -40,4 +33,4 @@ def name(name):
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0")
+    app.run(debug=True, host="0.0.0.0", port=5000)
