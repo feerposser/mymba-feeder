@@ -23,13 +23,25 @@ app.config["MONGODB_SETTINGS"] = {
 db.init_app(app)
 
 
-@app.route("/", methods=["GET", "POST"])
+@app.route("/hotspot", methods=["GET", "POST"])
 def index():
     if request.method == "POST":
 
         RequestManager(request).is_valid([*HotspotModel()._data.keys()])
 
-        return "Hello World"
+        hotspot = HotspotModel()
+
+        data = request.get_json()
+
+        hotspot.title = data["title"]
+        hotspot.description = data["description"]
+        hotspot.sponsors = data["sponsors"]
+        hotspot.contributors = data["contributors"]
+        hotspot.position = data["position"]
+
+        hotspot.save()
+
+        return jsonify(HotspotModel.objects())
     else:
         return jsonify(HotspotModel.objects())
 
