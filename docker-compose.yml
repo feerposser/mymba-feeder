@@ -24,7 +24,9 @@ services:
             MONGO_INITDB_ROOT_USERNAME: root    #db username
             MONGO_INITDB_ROOT_PASSWORD: example #db password
         volumes: 
-            - ./mongodata:/data/db
+            - .mongodata:/data/db
+        ports: 
+            - 27017:27017
     
     mongo-express:
         image: mongo-express
