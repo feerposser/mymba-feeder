@@ -9,7 +9,8 @@ class RequestManager:
     
     def is_valid(self, comparable, secure=False):
         """
-        Validate the data request
+        Validate the data request.
+        If the data in request is not in comparable, the request is invalid. Otherwise, is valid.
         :param comparable: dict_keys object
         :param secure: check if attribute request is secure
         :return: True if is valid, if it doesn't raise RequestFormatError

@@ -6,13 +6,14 @@ from flask import jsonify
 
 from models import db, HotspotModel
 from request_manager import RequestManager
+from data_manager import DataManager
 
 
 app = Flask(__name__)
 
 
 app.config["MONGODB_SETTINGS"] = {
-    "db": os.getenv("DATABASE_NAME", "mymba-feeder-teste"),
+    "db": os.getenv("DATABASE_NAME", "mymbafeeder"),
     "host": os.getenv("DATABASE_HOST", "localhost"),
     "username": os.getenv("DATABASE_USER", "root"),
     "password": os.getenv("DATABASE_PASSWORD", "example"),
@@ -26,22 +27,11 @@ db.init_app(app)
 @app.route("/hotspot", methods=["GET", "POST"])
 def index():
     if request.method == "POST":
+            
+        response = DataManager().insert(request.get_json())
 
-        RequestManager(request).is_valid([*HotspotModel()._data.keys()])
-
-        hotspot = HotspotModel()
-
-        data = request.get_json()
-
-        hotspot.title = data["title"]
-        hotspot.description = data["description"]
-        hotspot.sponsors = data["sponsors"]
-        hotspot.contributors = data["contributors"]
-        hotspot.position = data["position"]
-
-        hotspot.save()
-
-        return jsonify(HotspotModel.objects())
+        return response
+        
     else:
         return jsonify(HotspotModel.objects())
 
