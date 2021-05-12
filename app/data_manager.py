@@ -16,5 +16,5 @@ class DataManager:
         hotspot.position = data["position"]
         hotspot.save()
 
-        return hotspot.to_json()
+        return hotspot
     
