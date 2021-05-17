@@ -6,7 +6,6 @@ from flask import jsonify
 from flask import make_response
 
 from models import db, HotspotModel
-from request_manager import RequestManager
 from data_manager import DataManager
 
 
@@ -27,15 +26,12 @@ db.init_app(app)
 
 @app.route("/hotspot", methods=["GET", "POST"])
 def index():
-    if request.method == "POST":
-            
+    if request.method == "POST":   
         response = make_response(
             jsonify(
                 DataManager().insert(request.get_json())), 
                 200)
-        
         return response
-        
     else:
         return make_response(
             jsonify(HotspotModel.objects()),
