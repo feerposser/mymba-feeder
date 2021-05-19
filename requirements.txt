@@ -2,3 +2,5 @@ Flask==1.1.2
 requests==2.25.0
 flask-mongoengine==1.0.0
 pytest
+pytest-flask
+flask-shell-ipython
