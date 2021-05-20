@@ -2,19 +2,20 @@
 
 # fallows -> https://github.com/MongoEngine/flask-mongoengine/blob/master/tests/test_connection.py
 
-from flask_mongoengine import MongoEngine, current_mongoengine_instance
+from flask_mongoengine import current_mongoengine_instance
 
 def test_connection(db):
-    assert current_mongoengine_instance() == db, "Current mongo instance is not the same as the test"
+    assert current_mongoengine_instance() == db, \
+        "Current mongo instance is not the same as the test"
 
 def test_database_config(db):
     assert db.connection.get_database("mymbafeeder_test").name == "mymbafeeder_test"
 
-def test_insert_db(todo_model):
+def test_insert_db(hotspot_model, fake_name):
     try:
-        t = todo_model()
+        t = hotspot_model()
 
-        t.title = "abc"
+        t.title = fake_name
         t.save()
         
         assert "a"=="a"

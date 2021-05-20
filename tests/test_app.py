@@ -1,7 +1,7 @@
 # test app config (uses pytest-flask)
 
-def test_app_name_is_teste(app):
-    assert app.name == "teste"
+def test_app_name_is_testing(app):
+    assert app.name == "testing"
 
 def test_app_config(config):
     assert config["DEBUG"] is False

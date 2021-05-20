@@ -4,3 +4,4 @@ flask-mongoengine==1.0.0
 pytest
 pytest-flask
 flask-shell-ipython
+faker

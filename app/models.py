@@ -11,5 +11,7 @@ class HotspotModel(db.Document):
     position = db.DictField()
     created = db.DateTimeField(default=datetime.datetime.now)
 
+    meta = {"allow_inheritance": True}
+
     def __str__(self):
         return self.title

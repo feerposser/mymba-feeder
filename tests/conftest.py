@@ -6,20 +6,24 @@ from datetime import datetime
 import mongoengine
 from flask import Flask
 from flask_mongoengine import MongoEngine
+from faker import Faker
+
+from app.models import HotspotModel
 
 
 @pytest.fixture(scope="module")  
 def app():
     """
-    Create a new flask app instance for a testing environment
+    Create a new flask app instance for a testing environment with context
+    https://flask.palletsprojects.com/en/1.1.x/appcontext/
     """
-    app = Flask("teste")
+    app = Flask("testing")
 
     app.config["TESTING"] = True  # disable error catching
     app.config["WTF_CSRF_ENABLED"] = False
     app.config["DEBUG"] = False
 
-    with app.app_context(): # https://flask.palletsprojects.com/en/1.1.x/appcontext/
+    with app.app_context():
         yield app
 
     mongoengine.connection.disconnect_all()
@@ -55,16 +59,17 @@ def db(app):
 
 
 @pytest.fixture()
-def todo_model(db):
+def hotspot_model(db):
     """
-    Return an mongodb to do list for testing
+    Return the hotspot model class as a fixture
     """
-    class Todo(db.Document):
-        title = mongoengine.StringField(max_length=60)
-        text = mongoengine.StringField()
-        done = mongoengine.BooleanField(default=False)
-        pub_date = mongoengine.DateTimeField(default=datetime.utcnow)
-        comments = mongoengine.ListField(mongoengine.StringField())
-        comment_count = mongoengine.IntField()
 
-    return Todo
+    return HotspotModel
+
+@pytest.fixture(scope="module",  autouse=True)
+def fake_name():
+    """
+    Return a random fake name from faker packg
+    """
+    fake = Faker()
+    return fake.name()
