@@ -10,7 +10,6 @@ from faker import Faker
 
 from app.models import HotspotModel
 
-
 @pytest.fixture(scope="module")  
 def app():
     """
@@ -55,7 +54,7 @@ def db(app):
     yield test_db
 
     # clear db after testing
-    # test_db.connection.drop_database(db_name)
+    test_db.connection.drop_database(db_name)
 
 
 @pytest.fixture()
@@ -67,9 +66,10 @@ def hotspot_model(db):
     return HotspotModel
 
 @pytest.fixture(scope="module",  autouse=True)
-def fake_name():
+def fake_dict_latlng():
     """
-    Return a random fake name from faker packg
+    Return a random fake dict(lat, lng) using random coordinates from faker
     """
     fake = Faker()
-    return fake.name()
+    lat, lng = fake.latlng()
+    return {"latitude": float(lat), "longitude": float(lng)}
