@@ -29,6 +29,9 @@ def test_connection(db):
         "Current mongo instance is not the same as the test"
 
 def test_insert_hotspots_in_db(hotspot_model, faker, fake_dict_latlng):
+    """
+    test multiple insertion in db
+    """
     try:
         for _ in range(0, 50):
             insert_fake_data_in_db(hotspot_model, faker, fake_dict_latlng)
@@ -36,9 +39,15 @@ def test_insert_hotspots_in_db(hotspot_model, faker, fake_dict_latlng):
         raise AssertionError(str(e))
 
 def test_retrieve_hotspots_from_db(hotspot_model):
+    """
+    test getting hotspots from db
+    """
     assert len(hotspot_model.objects()) > 0
 
 def test_delete_hotspot_from_db(hotspot_model):
+    """
+    test delete a hotspot from db
+    """
     try:
         hotspot = hotspot_model.objects.first()
 
@@ -49,3 +58,25 @@ def test_delete_hotspot_from_db(hotspot_model):
         raise AssertionError(dne)
     except Exception as e:
         raise AssertionError(str(e))
+
+def test_update_hotspot_from_db(hotspot_model, faker):
+    """
+    test update first hotspot from db
+    """
+    new_description = "testing some new description"
+    try:
+        hotspot = hotspot_model.objects.first()
+    except Exception as e:
+        raise AssertionError("Error on get first hotspot: {}".format(str(e)))
+    
+    try:
+        hotspot.description = new_description
+        hotspot.save()
+    except Exception as e:
+        raise AssertionError("Error on saving new description: {}".format(str(e)))
+
+    try:
+        hotspot = hotspot_model.objects.get(description=new_description)
+        assert hotspot.description == new_description
+    except Exception as e:
+        raise AssertionError("Error on get hotspot by new description: {}".format(str(e)))
