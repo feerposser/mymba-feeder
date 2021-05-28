@@ -8,7 +8,8 @@ from flask import Flask
 from flask_mongoengine import MongoEngine
 from faker import Faker
 
-from app.models import HotspotModel
+from mymba-feeder.models import HotspotModel
+from mymba-feeder.app import create_app
 
 @pytest.fixture(scope="module")  
 def app():

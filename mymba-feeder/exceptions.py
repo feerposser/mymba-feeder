@@ -1,3 +1,0 @@
-
-class RequestFormatError(Exception):
-    pass

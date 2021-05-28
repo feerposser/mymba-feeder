@@ -13,7 +13,6 @@ def create_app():
 
     app = Flask(__name__)
 
-
     app.config["MONGODB_SETTINGS"] = {
         "db": os.getenv("DATABASE_NAME", "mymbafeeder"),
         "host": os.getenv("DATABASE_HOST", "localhost"),
@@ -22,23 +21,19 @@ def create_app():
         'authentication_source': 'admin'
     }
 
-
     db.init_app(app)
-
 
     @app.route("/hotspot", methods=["GET", "POST"])
     def index():
         if request.method == "POST":   
             response = make_response(
                 jsonify(
-                    DataManager().insert(request.get_json())), 
-                    200)
+                    DataManager().insert(request.get_json())), 200)
             return response
         else:
             return make_response(
                 jsonify(HotspotModel.objects()),
                 200)
-
 
     @app.route("/<name>")
     def name(name):

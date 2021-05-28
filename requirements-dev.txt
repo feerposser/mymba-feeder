@@ -1,0 +1,4 @@
+pytest
+pytest-flask
+flask-shell-ipython
+faker
