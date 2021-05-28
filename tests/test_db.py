@@ -23,10 +23,17 @@ def insert_fake_data_in_db(hotspot_model, faker, fake_dict_latlng):
 
 def test_connection(db):
     """
-    test if current mongo conn is the same as used by testing app
+    test if current mongo db is the same as used by testing app
     """
-    assert current_mongoengine_instance() == db, \
+    assert current_mongoengine_instance().get_db() == db.get_db(), \
         "Current mongo instance is not the same as the test"
+
+def test_db_name(db):
+    """
+    test if current mongo db name is the same as used by testing
+    """
+    assert current_mongoengine_instance().get_db().name == db.get_db().name, \
+        "current mongo db name is not the same as used by testing"
 
 def test_insert_hotspots_in_db(hotspot_model, faker, fake_dict_latlng):
     """

@@ -8,8 +8,8 @@ from flask import Flask
 from flask_mongoengine import MongoEngine
 from faker import Faker
 
-from mymba-feeder.models import HotspotModel
-from mymba-feeder.app import create_app
+from mymba_feeder.models import HotspotModel
+from mymba_feeder.app import create_app
 
 @pytest.fixture(scope="module")  
 def app():
@@ -17,7 +17,7 @@ def app():
     Create a new flask app instance for a testing environment with context
     https://flask.palletsprojects.com/en/1.1.x/appcontext/
     """
-    app = Flask("testing")
+    app = create_app()
 
     app.config["TESTING"] = True  # disable error catching
     app.config["WTF_CSRF_ENABLED"] = False
@@ -35,13 +35,9 @@ def db(app):
     return a testing database to be use in tests
     """
 
-    app.config["MONGODB_SETTINGS"] = {
-        "db": "mymbafeeder_test",
-        "host": "localhost",
-        "username": "root",
-        "password": "example",
-        'authentication_source': 'admin'
-    }
+    mongoengine.disconnect_all()
+
+    app.config["MONGODB_SETTINGS"]["db"] = "mymbafeeder_test"
 
     test_db = MongoEngine(app)
 
