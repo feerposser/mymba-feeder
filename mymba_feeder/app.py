@@ -37,15 +37,15 @@ def create_app():
     def hotspot(title):
         if request.method == "GET":
             return make_response(
-                jsonify(HotspotManager().get_by_title(title)), 200
-            )
+                jsonify(HotspotManager().get_by_title(title)), 200)
+
         elif request.method == "PATCH" or request.method == "PUT":
             return make_response(
                 jsonify(HotspotManager().update(title, request.get_json())), 200)
 
-    @app.route("/<name>")
-    def name(name):
-        return "hello {}".format(name)
+        elif request.method == "DELETE":
+            HotspotManager().delete(title)
+            return make_response({}, 200)
 
     return app
 

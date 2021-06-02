@@ -74,3 +74,18 @@ def fake_dict_latlng():
     fake = Faker()
     lat, lng = fake.latlng()
     return {"latitude": float(lat), "longitude": float(lng)}
+
+@pytest.fixture(scope="function")
+def create_hotspot(hotspot_model):
+
+    def create(title):
+        hotspot = hotspot_model()
+        hotspot.title = title
+        hotspot.save()
+        return hotspot
+
+    return create
+
+@pytest.fixture(scope="module")
+def get_hotspot_for_patch(client):
+    return client.get("/hotspot/").json[-1]

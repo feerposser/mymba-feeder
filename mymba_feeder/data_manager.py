@@ -37,3 +37,6 @@ class HotspotManager:
         hotspot.save()
 
         return hotspot
+    
+    def delete(self, title):
+        return self.get_by_title(title).delete()
