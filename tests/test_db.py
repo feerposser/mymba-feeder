@@ -6,6 +6,7 @@ import random
 from flask_mongoengine import current_mongoengine_instance
 from mongoengine.errors import DoesNotExist
 
+
 def insert_fake_data_in_db(hotspot_model, faker, fake_dict_latlng):
     """
     Insert fake data in database
@@ -13,6 +14,7 @@ def insert_fake_data_in_db(hotspot_model, faker, fake_dict_latlng):
     hotspot = hotspot_model()
 
     hotspot.title = faker.unique.name()
+    hotspot.description = "The dead speak! The galaxy has heard a mysterious broadcast, a threat of REVENGE in the sinister voice of the late EMPEROR PALPATINE."
     for _ in range(random.randint(1, 7)):
         hotspot.sponsors.append(faker.name())
     for _ in range(random.randint(1, 4)):
@@ -27,13 +29,6 @@ def test_connection(db):
     """
     assert current_mongoengine_instance().get_db() == db.get_db(), \
         "Current mongo instance is not the same as the test"
-
-def test_db_name(db):
-    """
-    test if current mongo db name is the same as used by testing
-    """
-    assert current_mongoengine_instance().get_db().name == db.get_db().name, \
-        "current mongo db name is not the same as used by testing"
 
 def test_insert_hotspots_in_db(hotspot_model, faker, fake_dict_latlng):
     """
@@ -66,7 +61,7 @@ def test_delete_hotspot_from_db(hotspot_model):
     except Exception as e:
         raise AssertionError(str(e))
 
-def test_update_hotspot_from_db(hotspot_model, faker):
+def test_update_hotspot_from_db(hotspot_model):
     """
     test update first hotspot from db
     """

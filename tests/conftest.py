@@ -11,13 +11,19 @@ from faker import Faker
 from mymba_feeder.models import HotspotModel
 from mymba_feeder.app import create_app
 
-@pytest.fixture(scope="module")  
+@pytest.fixture(scope="session")  
 def app():
     """
     Create a new flask app instance for a testing environment with context
     https://flask.palletsprojects.com/en/1.1.x/appcontext/
     """
     app = create_app()
+
+    mongoengine.disconnect_all()
+
+    app.config["MONGODB_SETTINGS"]["db"] = "mymbafeeder_test"
+
+    test_db = MongoEngine(app)
 
     app.config["TESTING"] = True  # disable error catching
     app.config["WTF_CSRF_ENABLED"] = False
@@ -29,15 +35,11 @@ def app():
     mongoengine.connection.disconnect_all()
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def db(app):
     """
     return a testing database to be use in tests
     """
-
-    mongoengine.disconnect_all()
-
-    app.config["MONGODB_SETTINGS"]["db"] = "mymbafeeder_test"
 
     test_db = MongoEngine(app)
 
@@ -47,19 +49,21 @@ def db(app):
         raise RuntimeError(
             f"DATABASE PATH must point to testing db, not to '{db_name}'"
         )
-    
+
     yield test_db
 
-    # clear db after testing
-    test_db.connection.drop_database(db_name)
-
+    test_db.connection.drop_database("mymbafeeder_test")
+    
 
 @pytest.fixture()
-def hotspot_model(db):
+def client(app):
+    return app.test_client()
+
+@pytest.fixture()
+def hotspot_model():
     """
     Return the hotspot model class as a fixture
     """
-
     return HotspotModel
 
 @pytest.fixture(scope="module",  autouse=True)

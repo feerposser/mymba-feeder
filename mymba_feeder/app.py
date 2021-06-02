@@ -25,7 +25,6 @@ def create_app():
 
     @app.route("/hotspot/", methods=("GET", "POST", "PUT"))
     def hotspots():
-        print("está aqui")
         if request.method == "POST": 
             response = make_response(
                 jsonify(HotspotManager().insert(request.get_json())), 201)
@@ -36,8 +35,6 @@ def create_app():
 
     @app.route("/hotspot/<title>/", methods=("GET", "PATCH", "PUT", "DELETE"))
     def hotspot(title):
-        print("ou está aqui")
-        print("-->", request.method)
         if request.method == "GET":
             return make_response(
                 jsonify(HotspotManager().get_by_title(title)), 200
