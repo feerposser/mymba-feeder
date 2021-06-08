@@ -55,7 +55,7 @@ def db(app):
     test_db.connection.drop_database("mymbafeeder_test")
     
 
-@pytest.fixture()
+@pytest.fixture(scope="module")
 def client(app):
     return app.test_client()
 
@@ -87,5 +87,5 @@ def create_hotspot(hotspot_model):
     return create
 
 @pytest.fixture(scope="module")
-def get_hotspot_for_patch(client):
+def hotspot_for_patch(client):
     return client.get("/hotspot/").json[-1]
