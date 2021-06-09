@@ -6,24 +6,24 @@ def patch(title, client, **kwargs):
 
     return client.patch("/hotspot/{}/".format(title), json=resource)
 
-def test_patch_descriptio_hotspot_200(client, hotspot_for_patch):
+def test_patch_descriptio_hotspot_200(client, hotspot_for_patch_put):
     """
     make a update in the description of a resource and patches
     """
     new_description = "the new description of the resource"
 
-    response = patch(hotspot_for_patch["title"], client, description=new_description)
+    response = patch(hotspot_for_patch_put["title"], client, description=new_description)
 
     assert response.status_code == 200, \
         "response not equals to 200. {} instead.".format(response.status_code)
 
-def test_patch_description_hotspot_check_response(client, hotspot_for_patch):
+def test_patch_description_hotspot_check_response(client, hotspot_for_patch_put):
     """
     make an update to /hotspot/title/ using the last data in response
     """
     new_description = "testing patch to hotspot update"
 
-    title = hotspot_for_patch["title"]
+    title = hotspot_for_patch_put["title"]
 
     patch(title, client, description=new_description)
 
@@ -44,12 +44,12 @@ def test_patch_description_hotspot_404(client):
     assert response.status_code == 404, \
         "status code response not equals to 404. {} instead.".format(response.status_code)
 
-def test_patch_sponsors_hotspot_200(client, hotspot_for_patch):
+def test_patch_sponsors_hotspot_200(client, hotspot_for_patch_put):
     """
     update sponsors by title
     """
-    title = hotspot_for_patch["title"]
-    sponsors = hotspot_for_patch["sponsors"]
+    title = hotspot_for_patch_put["title"]
+    sponsors = hotspot_for_patch_put["sponsors"]
     sponsors.append("Bob")
 
     response = patch(title, client, sponsors=sponsors)
@@ -57,12 +57,12 @@ def test_patch_sponsors_hotspot_200(client, hotspot_for_patch):
     assert response.status_code == 200, \
         "response not equals to 200. {} instead".format(response.status_code)
 
-def test_patch_sponsors_hotspot_check_response(client, hotspot_for_patch):
+def test_patch_sponsors_hotspot_check_response(client, hotspot_for_patch_put):
     """
     update sponsors by title and check response
     """
-    title = hotspot_for_patch["title"]
-    sponsors = hotspot_for_patch["sponsors"]
+    title = hotspot_for_patch_put["title"]
+    sponsors = hotspot_for_patch_put["sponsors"]
     sponsors.append("Check response")
 
     response = patch(title, client, sponsors=sponsors)
@@ -86,12 +86,12 @@ def test_patch_sponsors_hotspot_404(client):
     assert response.status_code == 404, \
         "response not equals to 404. {} instead.".format(response.status_code)
 
-def test_patch_contributors_hotspot_200(client, hotspot_for_patch):
+def test_patch_contributors_hotspot_200(client, hotspot_for_patch_put):
     """
     update contributors by title and get 200 status code response
     """
-    title = hotspot_for_patch["title"]
-    contributors = hotspot_for_patch["contributors"]
+    title = hotspot_for_patch_put["title"]
+    contributors = hotspot_for_patch_put["contributors"]
     contributors.append("Christian Shephard")
 
     response = patch(title, client, contributors=contributors)
@@ -99,12 +99,12 @@ def test_patch_contributors_hotspot_200(client, hotspot_for_patch):
     assert response.status_code == 200, \
         "resppnse status code not equals to 200. {} instead.".format(response.status_code)
 
-def test_patch_contributors_hotspot_check_response(client, hotspot_for_patch):
+def test_patch_contributors_hotspot_check_response(client, hotspot_for_patch_put):
     """
     update contributors by title and check the update
     """
-    title = hotspot_for_patch["title"]
-    contributors = hotspot_for_patch["contributors"]
+    title = hotspot_for_patch_put["title"]
+    contributors = hotspot_for_patch_put["contributors"]
     contributors.append("Madison the Dog")
 
     response = patch(title, client, contributors=contributors)
@@ -129,11 +129,11 @@ def test_patch_contributors_hotspot_404(client):
     assert response.status_code == 404, \
         "response not equals to 404. {} instead.".format(response.status_code)
 
-def test_patch_position_hotspot_200(client, hotspot_for_patch):
+def test_patch_position_hotspot_200(client, hotspot_for_patch_put):
     """
     update a hotspot position by title and get a 200 status code response
     """
-    title = hotspot_for_patch["title"]
+    title = hotspot_for_patch_put["title"]
     position = {"latitude": 50, "longitude": 50}
 
     response = patch(title, client, position=position)
@@ -141,11 +141,11 @@ def test_patch_position_hotspot_200(client, hotspot_for_patch):
     assert response.status_code == 200, \
         "response not equals to 200. {} instead.".format(response.status_code)
 
-def test_patch_position_hotspot_check_response(client, hotspot_for_patch):
+def test_patch_position_hotspot_check_response(client, hotspot_for_patch_put):
     """
     update a hotspot position by title and check the update
     """
-    title = hotspot_for_patch["title"]
+    title = hotspot_for_patch_put["title"]
     position = {"latitude": 51, "longitude": 51}
 
     response = patch(title, client, position=position)

@@ -1,3 +1,5 @@
+from mongoengine.errors import NotUniqueError
+
 from .models import HotspotModel
 
 
@@ -7,14 +9,17 @@ class HotspotManager:
         self.hotspot = HotspotModel()
 
     def insert(self, data):
-        self.hotspot.title = data["title"]
-        self.hotspot.description = data["description"]
-        self.hotspot.sponsors = data["sponsors"]
-        self.hotspot.contributors = data["contributors"]
-        self.hotspot.position = data["position"]
-        self.hotspot.save()
+        try:
+            self.hotspot.title = data["title"]
+            self.hotspot.description = data["description"]
+            self.hotspot.sponsors = data["sponsors"]
+            self.hotspot.contributors = data["contributors"]
+            self.hotspot.position = data["position"]
+            self.hotspot.save()
 
-        return self.hotspot
+            return self.hotspot
+        except NotUniqueError:
+            raise NotUniqueError("{} already exists".format(self.hotspot.title))
 
     @staticmethod
     def get_by_title(title):

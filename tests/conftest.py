@@ -87,5 +87,8 @@ def create_hotspot(hotspot_model):
     return create
 
 @pytest.fixture(scope="module")
-def hotspot_for_patch(client):
+def hotspot_for_patch_put(client):
+    """
+    get last resource for testing patch and put http requests
+    """
     return client.get("/hotspot/").json[-1]

@@ -2,8 +2,9 @@ import os
 
 from flask import Flask
 from flask import request
-from flask import jsonify
+from flask import jsonify, abort
 from flask import make_response
+from mongoengine.errors import NotUniqueError
 
 from .models import db, HotspotModel
 from .data_manager import HotspotManager
@@ -23,12 +24,20 @@ def create_app():
 
     db.init_app(app)
 
+    @app.errorhandler(409)
+    def conflict_errorhandler(message):
+        return make_response(
+            jsonify(str(message)), 409
+        )
+
     @app.route("/hotspot/", methods=("GET", "POST", "PUT"))
     def hotspots():
         if request.method == "POST": 
-            response = make_response(
-                jsonify(HotspotManager().insert(request.get_json())), 201)
-            return response
+            try:
+                return make_response(
+                    jsonify(HotspotManager().insert(request.get_json())), 201)
+            except NotUniqueError as n:
+                abort(409, n)
         else:
             return make_response(
                 jsonify(HotspotModel.objects()), 200)
@@ -40,8 +49,11 @@ def create_app():
                 jsonify(HotspotManager().get_by_title(title)), 200)
 
         elif request.method == "PATCH" or request.method == "PUT":
-            return make_response(
-                jsonify(HotspotManager().update(title, request.get_json())), 200)
+            try:
+                return make_response(
+                    jsonify(HotspotManager().update(title, request.get_json())), 200)
+            except NotUniqueError as n:
+                abort(409, n)
 
         elif request.method == "DELETE":
             HotspotManager().delete(title)

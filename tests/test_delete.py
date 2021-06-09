@@ -1,5 +1,5 @@
 
-def test_delete_by_title_200(client, create_hotspot):
+def test_delete_by_title_204(client, create_hotspot):
     """
     create a hotspot with a title and try to delete it
     http response must be 200
@@ -9,7 +9,7 @@ def test_delete_by_title_200(client, create_hotspot):
 
     response = client.delete("/hotspot/{}/".format(title))
 
-    assert response.status_code == 200, "response status code not equals to 200"
+    assert response.status_code == 204, "response status code not equals to 204"
 
 def test_delete_by_title_404(client):
     """
