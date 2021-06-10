@@ -9,12 +9,12 @@ services:
             context: .
             dockerfile: Dockerfile
         volumes:
-            - .:/app
+            - .:/opt/mymbafeeder/
         ports:
             - 5000:5000
         depends_on: 
             - mongo
-        command: python app/app.py
+        command: python mymba_feeder/app.py
     
     mongo:
         image: mongo

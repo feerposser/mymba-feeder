@@ -1,6 +1,6 @@
 from mongoengine.errors import NotUniqueError
 
-from .models import HotspotModel
+from mymba_feeder.models import HotspotModel
 
 
 class HotspotManager:

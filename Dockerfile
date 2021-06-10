@@ -9,9 +9,9 @@ ENV DATABASE_PASSWORD example
 ENV DATABASE_HOST mongo
 ENV DATABASE_PORT 27017
 
-WORKDIR /app
+WORKDIR /opt/mymbafeeder
 
-COPY . /app
+COPY . /opt/mymbafeeder
 
 # install dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -e .

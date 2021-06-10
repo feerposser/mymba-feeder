@@ -3,3 +3,5 @@
 .gitignore
 /env
 /mongodata
+/.pytest_cache
+/mymba_feeder.egg-info

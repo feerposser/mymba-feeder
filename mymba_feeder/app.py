@@ -6,8 +6,8 @@ from flask import jsonify, abort
 from flask import make_response
 from mongoengine.errors import NotUniqueError
 
-from .models import db, HotspotModel
-from .data_manager import HotspotManager
+from mymba_feeder.models import db, HotspotModel
+from mymba_feeder.data_manager import HotspotManager
 
 
 def create_app():
