@@ -25,39 +25,37 @@ def create_app():
     db.init_app(app)
 
     @app.errorhandler(409)
-    def conflict_errorhandler(message):
-        return make_response(
-            jsonify(str(message)), 409
-        )
+    def conflict_duplicate_resource_errorhandler(message):
+        response = make_response(str(message))
+        response.status_code = 409
+        return response
 
-    @app.route("/hotspot/", methods=("GET", "POST", "PUT"))
+    @app.route("/hotspot/", methods=("GET", "POST"))
     def hotspots():
         if request.method == "POST": 
             try:
-                return make_response(
-                    jsonify(HotspotManager().insert(request.get_json())), 201)
+                return make_response(jsonify(HotspotManager().insert(request.get_json())), 201)
             except NotUniqueError as n:
                 abort(409, n)
         else:
-            return make_response(
-                jsonify(HotspotModel.objects()), 200)
+            return make_response(jsonify(HotspotModel.objects()), 200)
 
     @app.route("/hotspot/<title>/", methods=("GET", "PATCH", "PUT", "DELETE"))
     def hotspot(title):
         if request.method == "GET":
-            return make_response(
-                jsonify(HotspotManager().get_by_title(title)), 200)
+            return make_response(jsonify(HotspotManager().get_by_title(title)), 200)
 
         elif request.method == "PATCH" or request.method == "PUT":
             try:
-                return make_response(
-                    jsonify(HotspotManager().update(title, request.get_json())), 200)
+                return make_response(jsonify(HotspotManager().update(title, request.get_json())), 200)
             except NotUniqueError as n:
                 abort(409, n)
 
         elif request.method == "DELETE":
             HotspotManager().delete(title)
-            return make_response({}, 200)
+            response = make_response()
+            response.status_code = 204
+            return response
 
     return app
 
