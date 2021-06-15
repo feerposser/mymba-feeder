@@ -15,6 +15,8 @@ services:
         depends_on: 
             - mongo
         command: python mymba_feeder/app.py
+        networks: 
+            - feeder
     
     mongo:
         image: mongo
@@ -27,6 +29,8 @@ services:
             - .mongodata:/data/db
         ports: 
             - 27017:27017
+        networks: 
+            - feeder
     
     mongo-express:
         image: mongo-express
@@ -42,5 +46,12 @@ services:
             ME_CONFIG_BASICAUTH_PASSWORD: admin         # mongo-empress login passw
         depends_on: 
             - mongo
+        networks: 
+            - feeder
+
+networks: 
+    feeder:
+        driver: bridge
+        name: feeder
 
 # runs on docker-compose up --build -d
