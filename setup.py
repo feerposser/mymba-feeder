@@ -17,7 +17,8 @@ setup(
     install_requires=[
         "Flask==1.1.2",
         "requests==2.25.0",
-        "flask-mongoengine==1.0.0"
+        "flask-mongoengine==1.0.0",
+        "flask-cors"
     ],
     extras_require={
         "dev_tools": [

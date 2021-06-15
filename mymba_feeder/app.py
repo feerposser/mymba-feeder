@@ -5,6 +5,7 @@ from flask import request
 from flask import jsonify, abort
 from flask import make_response
 from mongoengine.errors import NotUniqueError
+from flask_cors import CORS
 
 from mymba_feeder.models import db, HotspotModel
 from mymba_feeder.data_manager import HotspotManager
@@ -13,6 +14,8 @@ from mymba_feeder.data_manager import HotspotManager
 def create_app():
 
     app = Flask(__name__)
+
+    CORS(app)
 
     app.config["MONGODB_SETTINGS"] = {
         "db": os.getenv("DATABASE_NAME", "mymbafeeder"),
